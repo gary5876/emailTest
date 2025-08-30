@@ -40,7 +40,7 @@ public class EmailSendingService {
         model.put("paragraph2", req.getParagraph2());
         model.put("portfolioLinks", Optional.ofNullable(req.getPortfolioLinks()).orElse(List.of()));
 
-        String html = renderer.render("main", model);
+        String html = renderer.render("email-body-applicant", model);
 
         String subject = (req.getSubject() != null && !req.getSubject().isBlank())
                 ? subjectPrefix + " " + req.getSubject()

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>지원서 접수 확인</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 720px; margin: 24px auto; }
+        .box { border:1px solid #e5e7eb; border-radius:12px; padding:16px; }
+        .kv { margin:6px 0; }
+        .k { color:#6b7280; display:inline-block; width:140px; }
+        .v { color:#111827; font-weight:600; }
+        ul { margin: 8px 0 0 16px; }
+    </style>
+</head>
+<body>
+<h2>지원서 접수 확인</h2>
+<p>
+    <span th:text="${applicantName}">홍길동</span> 님, <b th:text="${clubName}">클럽명</b> 지원서가 정상적으로 접수되었습니다.
+</p>
+
+<div class="box">
+    <div class="kv"><span class="k">이름</span><span class="v" th:text="${applicantName}">홍길동</span></div>
+    <div class="kv"><span class="k">이메일</span><span class="v" th:text="${applicantEmail}">abc@x.com</span></div>
+    <div class="kv"><span class="k">제출시각</span><span class="v" th:text="${submittedAt}">2025-08-30T12:34:56+09:00</span></div>
+</div>
+
+<h3 style="margin-top:18px;">작성하신 내용</h3>
+<h4>자기소개 1</h4>
+<div th:text="${paragraph1}">내용</div>
+
+<h4>자기소개 2</h4>
+<div th:text="${paragraph2}">내용</div>
+
+<div th:if="${portfolioLinks}">
+    <h4>포트폴리오 링크</h4>
+    <ul>
+        <li th:each="lk : ${portfolioLinks}">
+            <a th:href="${lk}" th:text="${lk}">link</a>
+        </li>
+    </ul>
+</div>
+
+<p style="color:#6b7280; margin-top:16px;">
+    ※ 본 메일은 자동 발신입니다. 문의가 필요하면 이 메일에 회신하시거나, 운영 담당자에게 연락해 주세요.
+</p>
+</body>
+</html>
