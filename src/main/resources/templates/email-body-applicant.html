@@ -31,6 +31,20 @@
 <h4>자기소개 2</h4>
 <div th:text="${paragraph2}">내용</div>
 
+<div th:each="a : ${answers}" class="q">
+    <div class="lab" th:text="${a.label}">질문</div>
+    <div th:switch="${a.type}">
+        <div th:case="'TEXT'"><div th:text="${a.value}">텍스트</div></div>
+        <div th:case="'RADIO'"><div th:text="${a.value}">라디오</div></div>
+        <div th:case="'CHECKBOX'">
+            <ul style="margin:6px 0 0 18px;">
+                <li th:each="v : ${a.values}" th:text="${v}">체크</li>
+            </ul>
+        </div>
+        <div th:case="*"><i>알 수 없는 타입</i></div>
+    </div>
+</div>
+
 <div th:if="${portfolioLinks}">
     <h4>포트폴리오 링크</h4>
     <ul>

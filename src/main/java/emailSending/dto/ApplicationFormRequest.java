@@ -25,6 +25,8 @@ public class ApplicationFormRequest {
     @NotBlank
     private String paragraph2;
 
+    private List<Answer> answers;
+
     private List<String> portfolioLinks; // 선택
 
     // 첨부파일은 컨트롤러에서 Multipart 로 받음
@@ -41,6 +43,8 @@ public class ApplicationFormRequest {
     public void setParagraph1(String paragraph1) { this.paragraph1 = paragraph1; }
     public String getParagraph2() { return paragraph2; }
     public void setParagraph2(String paragraph2) { this.paragraph2 = paragraph2; }
+    public List<Answer> getAnswers() { return answers; }
+    public void setAnswers(List<Answer> a) { this.answers = a; }
     public List<String> getPortfolioLinks() { return portfolioLinks; }
     public void setPortfolioLinks(List<String> portfolioLinks) { this.portfolioLinks = portfolioLinks; }
 }

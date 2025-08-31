@@ -38,7 +38,8 @@ public class EmailSendingService {
         model.put("clubName", req.getClubName());
         model.put("paragraph1", req.getParagraph1());
         model.put("paragraph2", req.getParagraph2());
-        model.put("portfolioLinks", Optional.ofNullable(req.getPortfolioLinks()).orElse(List.of()));
+        model.put("answers", Optional.ofNullable(req.getAnswers()).orElse(List.of()));
+        model.put("submittedAt", java.time.ZonedDateTime.now().toString());
 
         String html = renderer.render("email-body-applicant", model);
 
@@ -46,23 +47,29 @@ public class EmailSendingService {
                 ? subjectPrefix + " " + req.getSubject()
                 : subjectPrefix + " " + req.getClubName() + " - " + req.getApplicantName();
 
-        List<EmailAttachment> attachments = new ArrayList<>();
-        if (files != null) {
-            for (MultipartFile f : files) {
-                if (!f.isEmpty()) {
-                    try {
-                        attachments.add(new EmailAttachment(
-                                f.getOriginalFilename(),
-                                f.getBytes(),
-                                Optional.ofNullable(f.getContentType()).orElse("application/octet-stream")
-                        ));
-                    } catch (Exception e) {
-                        throw new RuntimeException("첨부파일 읽기 실패: " + f.getOriginalFilename(), e);
-                    }
-                }
+        emailSender.sendHtml(
+                from,
+                List.of(req.getApplicantEmail()),
+                subject,
+                html,
+                toAttachments(files)
+        );
+    }
+    private List<EmailAttachment> toAttachments(List<MultipartFile> files) {
+        if (files==null || files.isEmpty()) return List.of();
+        List<EmailAttachment> list = new ArrayList<>();
+        for (MultipartFile f : files) {
+            if (f.isEmpty()) continue;
+            try {
+                list.add(new EmailAttachment(
+                        Optional.ofNullable(f.getOriginalFilename()).orElse("attachment"),
+                        f.getBytes(),
+                        Optional.ofNullable(f.getContentType()).orElse("application/octet-stream")
+                ));
+            } catch (Exception e) {
+                throw new RuntimeException("첨부파일 읽기 실패: " + f.getOriginalFilename(), e);
             }
         }
-
-        emailSender.sendHtml(from, List.of(req.getApplicantEmail()), subject, html, attachments);
+        return list;
     }
 }

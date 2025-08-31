@@ -19,11 +19,12 @@ public class ApiController {
     }
 
     @PostMapping(value = "/send", consumes = {"multipart/form-data"})
-    public ResponseEntity<?> send(
+    public ResponseEntity<?> sendDynamic(
             @Valid @RequestPart("form") ApplicationFormRequest form,
             @RequestPart(name = "files", required = false) List<MultipartFile> files
     ) {
         emailSendingService.sendToApplicant(form, files);
         return ResponseEntity.ok().body("{\"status\":\"SENT\"}");
     }
+
 }
